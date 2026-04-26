@@ -29,6 +29,10 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .demo-link{display:block;text-align:center;margin-top:14px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline}
 .demo-link:hover{color:var(--text)}
 .stripe-note{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center;margin-top:16px;max-width:300px;line-height:1.6;opacity:.6}
+/* Upgrade notice on paywall after demo */
+.upgrade-notice{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:14px;padding:16px 20px;width:100%;max-width:340px;margin:0 auto 20px;text-align:center}
+.upgrade-notice p{font-size:13px;color:var(--accent);font-weight:600}
+.upgrade-notice small{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(7,7,13,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
 .app-header h1{font-size:19px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .demo-counter{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:#a78bfa;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace}
@@ -84,7 +88,18 @@ textarea.math-input::placeholder{color:var(--muted)}
 .pending-msg{color:var(--muted);font-size:13px;text-align:center;padding:16px}
 .streaming-dot{display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 1s ease-in-out infinite;margin-left:4px;vertical-align:middle}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
+
+/* Upgrade overlay shown after last demo problem */
+.upgrade-overlay{position:fixed;inset:0;background:rgba(7,7,13,.92);backdrop-filter:blur(8px);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;animation:fadeIn .4s ease}
+.upgrade-overlay .uo-icon{font-size:48px;margin-bottom:16px}
+.upgrade-overlay h2{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}
+.upgrade-overlay p{color:var(--muted);font-size:14px;margin-bottom:8px;max-width:280px;line-height:1.6}
+.upgrade-overlay .uo-timer{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:28px}
+.upgrade-overlay .uo-btn{background:linear-gradient(135deg,var(--accent),#00cc66);color:#000;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;padding:16px 32px;cursor:pointer;margin-bottom:12px;width:100%;max-width:300px}
+.upgrade-overlay .uo-skip{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
 </style>
@@ -95,6 +110,10 @@ textarea.math-input::placeholder{color:var(--muted)}
   <div class="pw-logo">∑</div>
   <h1 class="pw-title">MathAI Pro</h1>
   <p class="pw-sub">Solve anything. Understand everything.</p>
+  <div id="demoUsedNotice" style="display:none" class="upgrade-notice">
+    <p>🎉 You've seen what MathAI can do!</p>
+    <small>Upgrade to keep solving unlimited problems</small>
+  </div>
   <div class="plan-card popular">
     <div class="popular-badge">Most Popular</div>
     <div class="plan-name">Pro Monthly</div>
@@ -116,7 +135,7 @@ textarea.math-input::placeholder{color:var(--muted)}
     <ul class="plan-features"><li>Everything in monthly</li><li>Priority processing</li></ul>
   </div>
   <button class="pay-btn" onclick="handlePayment('yearly')">Start for $89.99 / year →</button>
-  <span class="demo-link" onclick="enterApp()">Try free demo (3 problems)</span>
+  <span class="demo-link" id="demoLink" onclick="enterApp()">Try free demo (3 problems)</span>
   <p class="stripe-note">🔒 Powered by Stripe · Secure & encrypted</p>
 </div>
 
@@ -165,56 +184,18 @@ textarea.math-input::placeholder{color:var(--muted)}
 </div>
 
 <script>
-const TEST_MODE = false; // Set to false when ready to launch
+const TEST_MODE = false;
 
-// Example banks – random pick each time
 const EXAMPLES = {
-  quadratic: [
-    'Solve: x² - 5x + 6 = 0',
-    'Solve: 2x² + 3x - 2 = 0',
-    'Solve: x² + 4x + 4 = 0',
-    'Solve: 3x² - 12 = 0',
-    'Solve: x² - 7x + 10 = 0',
-    'Solve: 4x² - 4x + 1 = 0',
-  ],
-  differentiation: [
-    'Differentiate f(x) = x³ · sin(x)',
-    'Differentiate f(x) = e^x · cos(x)',
-    'Differentiate f(x) = ln(x²+1)',
-    'Differentiate f(x) = x² / (x+1)',
-    'Differentiate f(x) = sin(x) / x',
-    'Differentiate f(x) = (x²+3)⁴',
-  ],
-  integral: [
-    'Evaluate the integral from 0 to 1 of x² + 2x',
-    'Evaluate the integral of sin(x) · cos(x)',
-    'Evaluate the integral from 1 to e of ln(x)',
-    'Evaluate the integral of x · e^x',
-    'Evaluate the integral from 0 to pi of sin(x)',
-    'Evaluate the integral of 1/(x²+1)',
-  ],
-  limit: [
-    'Find the limit as x approaches 0 of sin(x)/x',
-    'Find the limit as x approaches infinity of (1 + 1/x)^x',
-    'Find the limit as x approaches 0 of (e^x - 1)/x',
-    'Find the limit as x approaches 2 of (x²-4)/(x-2)',
-    'Find the limit as x approaches 0 of (1-cos(x))/x²',
-    'Find the limit as x approaches infinity of x/e^x',
-  ],
-  system: [
-    'Solve the system: 2x + y = 5, x - y = 1',
-    'Solve the system: 3x + 2y = 12, x - y = 1',
-    'Solve the system: x + y + z = 6, 2x - y = 3, y + z = 4',
-    'Solve the system: 4x - 3y = 1, 2x + y = 5',
-    'Solve the system: x² + y² = 25, x + y = 7',
-    'Solve the system: 5x - 2y = 8, 3x + y = 7',
-  ]
+  quadratic:['Solve: x² - 5x + 6 = 0','Solve: 2x² + 3x - 2 = 0','Solve: x² + 4x + 4 = 0','Solve: 3x² - 12 = 0','Solve: x² - 7x + 10 = 0','Solve: 4x² - 4x + 1 = 0'],
+  differentiation:['Differentiate f(x) = x³ · sin(x)','Differentiate f(x) = e^x · cos(x)','Differentiate f(x) = ln(x²+1)','Differentiate f(x) = x² / (x+1)','Differentiate f(x) = sin(x) / x','Differentiate f(x) = (x²+3)⁴'],
+  integral:['Evaluate the integral from 0 to 1 of x² + 2x','Evaluate the integral of sin(x) · cos(x)','Evaluate the integral from 1 to e of ln(x)','Evaluate the integral of x · e^x','Evaluate the integral from 0 to pi of sin(x)','Evaluate the integral of 1/(x²+1)'],
+  limit:['Find the limit as x approaches 0 of sin(x)/x','Find the limit as x approaches infinity of (1 + 1/x)^x','Find the limit as x approaches 0 of (e^x - 1)/x','Find the limit as x approaches 2 of (x²-4)/(x-2)','Find the limit as x approaches 0 of (1-cos(x))/x²','Find the limit as x approaches infinity of x/e^x'],
+  system:['Solve the system: 2x + y = 5, x - y = 1','Solve the system: 3x + 2y = 12, x - y = 1','Solve the system: x + y + z = 6, 2x - y = 3, y + z = 4','Solve the system: 4x - 3y = 1, 2x + y = 5','Solve the system: x² + y² = 25, x + y = 7','Solve the system: 5x - 2y = 8, 3x + y = 7']
 };
-
 function randomEx(type){
   const list=EXAMPLES[type];
-  const pick=list[Math.floor(Math.random()*list.length)];
-  document.getElementById('mathInput').value=pick;
+  document.getElementById('mathInput').value=list[Math.floor(Math.random()*list.length)];
 }
 
 let imgBase64=null,imgType=null,imgLabel=null;
@@ -222,10 +203,15 @@ let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
 let isDemoMode=localStorage.getItem('isDemoMode')==='true';
 let hist=JSON.parse(localStorage.getItem('mathHistory')||'[]');
 
-if(isDemoMode){
+// On load: show right screen
+if(isDemoMode && demoCount < 3){
   document.getElementById('paywall').classList.remove('active');
   document.getElementById('app').classList.add('active');
   updateCounter();renderHistory();
+} else if(isDemoMode && demoCount >= 3){
+  // Demo used up – stay on paywall but show notice
+  document.getElementById('demoUsedNotice').style.display='block';
+  document.getElementById('demoLink').style.display='none';
 }
 if(TEST_MODE) document.getElementById('testBanner').style.display='block';
 
@@ -248,9 +234,39 @@ function updateCounter(){
   if(!TEST_MODE&&left===0){badge.style.color='#ff4466';badge.style.borderColor='rgba(255,68,102,.4)';}
 }
 
+function showUpgradeOverlay(){
+  const overlay=document.createElement('div');
+  overlay.className='upgrade-overlay';
+  overlay.id='upgradeOverlay';
+  let secs=8;
+  overlay.innerHTML=`
+    <div class="uo-icon">🎉</div>
+    <h2>That's your 3 free problems!</h2>
+    <p>You just saw MathAI solve a real problem step by step. Upgrade to keep going — unlimited problems, any topic.</p>
+    <div class="uo-timer" id="overlayTimer">Taking you back in ${secs}s...</div>
+    <button class="uo-btn" onclick="goToPaywall()">Upgrade to Pro →</button>
+    <span class="uo-skip" onclick="goToPaywall()">View plans</span>
+  `;
+  document.body.appendChild(overlay);
+  const timer=setInterval(()=>{
+    secs--;
+    const el=document.getElementById('overlayTimer');
+    if(el) el.textContent=`Taking you back in ${secs}s...`;
+    if(secs<=0){clearInterval(timer);goToPaywall();}
+  },1000);
+}
+
+function goToPaywall(){
+  const overlay=document.getElementById('upgradeOverlay');
+  if(overlay) overlay.remove();
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('paywall').classList.add('active');
+  document.getElementById('demoUsedNotice').style.display='block';
+  document.getElementById('demoLink').style.display='none';
+}
+
 function triggerCamera(){document.getElementById('camInput').click()}
 function triggerGallery(){document.getElementById('galInput').click()}
-
 function handleImage(e){
   const file=e.target.files[0];if(!file)return;
   imgLabel=file.name;
@@ -263,7 +279,6 @@ function handleImage(e){
   };
   reader.readAsDataURL(file);e.target.value='';
 }
-
 function clearImage(){
   imgBase64=null;imgType=null;imgLabel=null;
   const zone=document.getElementById('cameraZone');
@@ -271,11 +286,8 @@ function clearImage(){
   zone.onclick=triggerGallery;
   document.getElementById('clearBtn').style.display='none';
 }
-
 function resetInput(){
-  // Clear text
   document.getElementById('mathInput').value='';
-  // Clear image
   clearImage();
 }
 
@@ -369,23 +381,15 @@ async function readStream(reader,onChunk){
 async function solve(){
   const text=document.getElementById('mathInput').value.trim();
   if(!text&&!imgBase64){alert('Type a problem or upload an image.');return;}
-  if(!TEST_MODE&&isDemoMode&&demoCount>=3){
-    alert('You have used all 3 free problems.\nUpgrade to Pro for unlimited access!');
-    document.getElementById('app').classList.remove('active');
-    document.getElementById('paywall').classList.add('active');
-    return;
-  }
+  if(!TEST_MODE&&isDemoMode&&demoCount>=3){goToPaywall();return;}
 
   const historyLabel=text||(imgLabel?'📷 '+imgLabel:'📷 Photo problem');
-
   const btn=document.getElementById('solveBtn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Solving...';
 
   const msgContent=[];
   if(imgBase64)msgContent.push({type:'image',source:{type:'base64',media_type:imgType||'image/jpeg',data:imgBase64}});
   msgContent.push({type:'text',text:text||(imgBase64?'Solve the math problem in this image.':'')});
-
-  // Clear input right after capturing the content
   resetInput();
 
   document.getElementById('resultArea').innerHTML=`
@@ -420,9 +424,15 @@ async function solve(){
     await readStream(r2,chunk=>{expFull+=chunk;document.getElementById('streamExplain').innerHTML=renderMd(expFull)+'<span class="streaming-dot"></span>';});
     document.getElementById('streamExplain').innerHTML=renderMd(expFull);
 
+    // Increment demo count AFTER showing the solution
     if(!TEST_MODE&&isDemoMode){
-      demoCount++;localStorage.setItem('demoCount',demoCount);updateCounter();
+      demoCount++;
+      localStorage.setItem('demoCount',demoCount);
+      updateCounter();
+      // If that was the last free problem, show upgrade overlay
+      if(demoCount>=3) showUpgradeOverlay();
     }
+
   }catch(err){
     document.getElementById('resultArea').innerHTML=`<div style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.3);color:#ff4466;border-radius:12px;padding:16px;font-size:13px">⚠ Error: ${err.message}</div>`;
   }
