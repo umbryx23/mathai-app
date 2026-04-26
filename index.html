@@ -4,71 +4,84 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>MathAI Pro – Solve Any Math Problem</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#07070d;--card:#0f0f1a;--border:#1e1e30;--accent:#00ff88;--purple:#7c3aed;--text:#e8e8f0;--muted:#5a5a72;--gold:#f59e0b;}
-body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;background-image:radial-gradient(ellipse at 15% 15%,rgba(124,58,237,.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(0,255,136,.06) 0%,transparent 55%);}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;background-image:radial-gradient(ellipse at 15% 15%,rgba(124,58,237,.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(0,255,136,.06) 0%,transparent 55%);}
 .screen{display:none;min-height:100vh;flex-direction:column}.screen.active{display:flex}
-#paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center;gap:0}
+#paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center}
 .pw-logo{font-size:52px;margin-bottom:14px;filter:drop-shadow(0 0 24px rgba(0,255,136,.4))}
 .pw-title{font-size:clamp(30px,8vw,48px);font-weight:800;line-height:1.1;background:linear-gradient(135deg,#fff 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
-.pw-sub{color:var(--muted);font-family:'Space Mono',monospace;font-size:12px;margin-bottom:28px}
+.pw-sub{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:28px}
 .plan-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;width:100%;max-width:340px;margin:0 auto 12px;text-align:left;position:relative}
 .plan-card.popular{border-color:var(--accent);box-shadow:0 0 30px rgba(0,255,136,.1)}
-.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),#00cc66);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:20px;font-family:'Space Mono',monospace;text-transform:uppercase}
-.plan-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:6px}
-.plan-price{font-size:34px;font-weight:800;margin-bottom:2px}.plan-price span{font-size:15px;font-weight:400;color:var(--muted)}
-.plan-period{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:14px}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),#00cc66);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:20px;font-family:'JetBrains Mono',monospace;text-transform:uppercase}
+.plan-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.plan-price{font-size:34px;font-weight:800;margin-bottom:2px;font-family:'Inter',sans-serif}.plan-price span{font-size:15px;font-weight:400;color:var(--muted)}
+.plan-period{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px}
 .plan-features{list-style:none;display:flex;flex-direction:column;gap:7px}
-.plan-features li{font-size:13px;display:flex;align-items:center;gap:8px}
+.plan-features li{font-size:13px;display:flex;align-items:center;gap:8px;font-weight:500}
 .plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
-.pay-btn{width:100%;max-width:340px;margin:6px auto 0;display:block;background:linear-gradient(135deg,var(--purple),#a855f7);color:white;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-weight:700;font-size:16px;padding:17px;cursor:pointer;transition:all .2s}
+.pay-btn{width:100%;max-width:340px;margin:6px auto 0;display:block;background:linear-gradient(135deg,var(--purple),#a855f7);color:white;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;padding:17px;cursor:pointer;transition:all .2s}
 .pay-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,58,237,.4)}
 .pay-btn.green{background:linear-gradient(135deg,var(--accent),#00cc66);color:#000}
-.pay-btn.green:hover{box-shadow:0 10px 30px rgba(0,255,136,.3)}
-.demo-link{display:block;text-align:center;margin-top:14px;color:var(--muted);font-size:12px;font-family:'Space Mono',monospace;cursor:pointer;text-decoration:underline}
+.demo-link{display:block;text-align:center;margin-top:14px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline}
 .demo-link:hover{color:var(--text)}
-.stripe-note{color:var(--muted);font-size:11px;font-family:'Space Mono',monospace;text-align:center;margin-top:16px;max-width:300px;line-height:1.6;opacity:.6}
+.stripe-note{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center;margin-top:16px;max-width:300px;line-height:1.6;opacity:.6}
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(7,7,13,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
 .app-header h1{font-size:19px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.pro-badge{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:20px;font-family:'Space Mono',monospace}
+.pro-badge{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace}
 .app-body{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px}
 .input-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
-.card-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:12px}
-.camera-zone{border:2px dashed var(--border);border-radius:12px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all .2s;overflow:hidden;background:rgba(255,255,255,.02)}
+.card-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:12px}
+.camera-zone{border:2px dashed var(--border);border-radius:12px;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all .2s;overflow:hidden;background:rgba(255,255,255,.02)}
 .camera-zone:hover{border-color:var(--accent);background:rgba(0,255,136,.04)}
-.camera-zone img{width:100%;object-fit:contain;border-radius:10px;max-height:210px}
-.camera-icon{font-size:30px;opacity:.5}.camera-text{font-size:12px;color:var(--muted);font-family:'Space Mono',monospace;text-align:center;line-height:1.6}
+.camera-zone img{width:100%;object-fit:contain;border-radius:10px;max-height:200px}
+.camera-icon{font-size:28px;opacity:.5}.camera-text{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-align:center;line-height:1.6}
 .cam-btns{display:flex;gap:8px;margin-top:12px}
-.cam-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(124,58,237,.13);border:1px solid rgba(124,58,237,.28);color:#a78bfa;border-radius:10px;padding:10px 6px;cursor:pointer;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;transition:all .2s}
+.cam-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:rgba(124,58,237,.13);border:1px solid rgba(124,58,237,.28);color:#a78bfa;border-radius:10px;padding:10px 6px;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:all .2s}
 .cam-btn:hover{background:rgba(124,58,237,.26)}.cam-btn.danger{color:#ff4466;border-color:rgba(255,68,102,.3);background:rgba(255,68,102,.08)}
 input[type=file]{display:none}
 .divider{display:flex;align-items:center;gap:10px;margin:12px 0}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.divider span{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace}
-textarea.math-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Space Mono',monospace;font-size:14px;padding:13px;resize:none;min-height:75px;transition:border-color .2s;line-height:1.6}
+.divider span{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+textarea.math-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:15px;font-weight:500;padding:13px;resize:none;min-height:75px;transition:border-color .2s;line-height:1.6}
 textarea.math-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,255,136,.07)}
 textarea.math-input::placeholder{color:var(--muted)}
 .lang-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
 .lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.lang-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);line-height:1.5}
+.lang-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);line-height:1.5}
 .lang-btn:hover{border-color:var(--purple);color:var(--text)}.lang-btn.selected{border-color:var(--accent);background:rgba(0,255,136,.08);color:var(--accent)}
 .lang-flag{font-size:20px;display:block;margin-bottom:4px}
 .examples-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.ex-chip{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);color:#a78bfa;font-family:'Space Mono',monospace;font-size:10px;padding:5px 10px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.ex-chip{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);color:#a78bfa;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:5px 10px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .ex-chip:hover{background:rgba(124,58,237,.22)}
-.solve-btn{width:100%;background:linear-gradient(135deg,var(--purple),#a855f7);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;padding:17px;cursor:pointer;transition:all .2s}
+.solve-btn{width:100%;background:linear-gradient(135deg,var(--purple),#a855f7);color:white;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;padding:17px;cursor:pointer;transition:all .2s}
 .solve-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(124,58,237,.4)}
 .solve-btn:disabled{opacity:.55;cursor:not-allowed}
 .result-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;animation:fadeUp .4s ease}
 .result-tabs{display:flex;border-bottom:1px solid var(--border)}
-.tab{flex:1;padding:13px 8px;text-align:center;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Space Mono',monospace;cursor:pointer;transition:all .2s;color:var(--muted);border-bottom:2px solid transparent}
+.tab{flex:1;padding:13px 8px;text-align:center;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:'Inter',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;color:var(--muted);border-bottom:2px solid transparent}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(0,255,136,.04)}
 .tab-content{display:none;padding:18px}.tab-content.active{display:block}
-.solution-text{font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:var(--text);white-space:pre-wrap}
-.answer{color:var(--accent);font-weight:700;font-size:14px}.step-head{color:#a78bfa;font-weight:700}
-.pending-msg{font-family:'Space Mono',monospace;color:var(--muted);font-size:12px;text-align:center;padding:16px}
+
+/* ── Rendered markdown styles ── */
+.md{font-family:'Inter',sans-serif;font-size:14px;line-height:1.8;color:var(--text)}
+.md h1,.md h2{color:#fff;font-weight:700;margin:16px 0 8px;font-size:15px}
+.md h3{color:#a78bfa;font-weight:600;margin:12px 0 6px;font-size:13px}
+.md strong{color:#fff;font-weight:700}
+.md em{color:#c4b5fd;font-style:italic}
+.md hr{border:none;border-top:1px solid var(--border);margin:14px 0}
+.md p{margin-bottom:10px}
+.md ul,.md ol{margin:8px 0 8px 20px}
+.md li{margin-bottom:4px}
+.md blockquote{border-left:3px solid var(--accent);padding-left:12px;color:var(--muted);margin:10px 0}
+.md code{background:rgba(124,58,237,.15);color:#a78bfa;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px}
+.answer-line{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:15px;font-weight:700;color:var(--accent);font-family:'Inter',sans-serif}
+.step-label{color:#a78bfa;font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace}
+.pending-msg{font-family:'Inter',monospace;color:var(--muted);font-size:13px;text-align:center;padding:16px}
+
 .streaming-dot{display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 1s ease-in-out infinite;margin-left:4px;vertical-align:middle}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -154,72 +167,80 @@ textarea.math-input::placeholder{color:var(--muted)}
 <script>
 let imgBase64=null,imgType=null,demoCount=0,isDemoMode=false,selectedLang='English';
 
-// ── Replace with your Stripe Payment Links ──
-const STRIPE_LINKS = {
-  monthly: 'https://buy.stripe.com/REPLACE_MONTHLY',
-  yearly:  'https://buy.stripe.com/REPLACE_YEARLY'
-};
-
-function handlePayment(plan){ window.location.href = STRIPE_LINKS[plan]; }
+const STRIPE_LINKS={monthly:'https://buy.stripe.com/REPLACE_MONTHLY',yearly:'https://buy.stripe.com/REPLACE_YEARLY'};
+function handlePayment(plan){window.location.href=STRIPE_LINKS[plan];}
 
 function enterApp(){
   isDemoMode=true;
   document.getElementById('paywall').classList.remove('active');
   document.getElementById('app').classList.add('active');
 }
-
-function triggerCamera(){ document.getElementById('camInput').click(); }
-function triggerGallery(){ document.getElementById('galInput').click(); }
-
+function triggerCamera(){document.getElementById('camInput').click()}
+function triggerGallery(){document.getElementById('galInput').click()}
 function handleImage(e){
-  const file=e.target.files[0]; if(!file)return;
+  const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=(ev)=>{
     const src=ev.target.result;
-    imgBase64=src.split(',')[1]; imgType=file.type;
+    imgBase64=src.split(',')[1];imgType=file.type;
     const zone=document.getElementById('cameraZone');
-    zone.innerHTML=`<img src="${src}" alt="Uploaded"/>`;
-    zone.onclick=null;
+    zone.innerHTML=`<img src="${src}" alt="Uploaded"/>`;zone.onclick=null;
     document.getElementById('clearBtn').style.display='flex';
   };
-  reader.readAsDataURL(file); e.target.value='';
+  reader.readAsDataURL(file);e.target.value='';
 }
-
 function clearImage(){
-  imgBase64=null; imgType=null;
+  imgBase64=null;imgType=null;
   const zone=document.getElementById('cameraZone');
   zone.innerHTML=`<div class="camera-icon">📸</div><div class="camera-text">Tap to take photo or upload image<br/><span style="font-size:11px;opacity:.6">JPG, PNG supported</span></div>`;
   zone.onclick=triggerGallery;
   document.getElementById('clearBtn').style.display='none';
 }
-
-function setEx(t){ document.getElementById('mathInput').value=t; }
+function setEx(t){document.getElementById('mathInput').value=t}
 function selectLang(el,lang){
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected'); selectedLang=lang;
+  el.classList.add('selected');selectedLang=lang;
 }
 
-// ── All API calls go through /api/solve — API key stays on server ──
-async function callAPI(system, messages){
-  const res = await fetch('/api/solve', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ system, messages })
+// ── Markdown renderer ──
+function renderMd(text){
+  return text
+    .replace(/\r\n/g,'\n')
+    .replace(/^#{3}\s(.+)$/gm,'<h3>$1</h3>')
+    .replace(/^#{2}\s(.+)$/gm,'<h2>$1</h2>')
+    .replace(/^#{1}\s(.+)$/gm,'<h1>$1</h1>')
+    .replace(/^---+$/gm,'<hr>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/^>\s(.+)$/gm,'<blockquote>$1</blockquote>')
+    .replace(/^[-*]\s(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs,'<ul>$1</ul>')
+    .replace(/★ Answer:(.*)/g,'<div class="answer-line">★ Answer:$1</div>')
+    .replace(/(Step \d+:)/g,'<span class="step-label">$1</span>')
+    .replace(/(📌 Problem:)/g,'<span class="step-label">$1</span>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/^(?!<[hbulpd])/gm,'')
+    .replace(/<p><\/p>/g,'');
+}
+
+async function callAPI(system,messages){
+  const res=await fetch('/api/solve',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({system,messages})
   });
-  if(!res.ok) throw new Error('Server error ' + res.status);
+  if(!res.ok)throw new Error('Server error '+res.status);
   return res.body.getReader();
 }
 
-async function streamReader(reader, onChunk){
-  const dec = new TextDecoder();
+async function readStream(reader,onChunk){
+  const dec=new TextDecoder();
   while(true){
-    const{done,value}=await reader.read(); if(done)break;
+    const{done,value}=await reader.read();if(done)break;
     for(const line of dec.decode(value).split('\n')){
       if(line.startsWith('data: ')){
-        try{
-          const p=JSON.parse(line.slice(6));
-          if(p.type==='content_block_delta'&&p.delta?.text) onChunk(p.delta.text);
-        }catch(e){}
+        try{const p=JSON.parse(line.slice(6));if(p.type==='content_block_delta'&&p.delta?.text)onChunk(p.delta.text);}catch(e){}
       }
     }
   }
@@ -227,68 +248,57 @@ async function streamReader(reader, onChunk){
 
 async function solve(){
   const text=document.getElementById('mathInput').value.trim();
-  if(!text&&!imgBase64){ alert('Type a problem or upload an image.'); return; }
+  if(!text&&!imgBase64){alert('Type a problem or upload an image.');return;}
   if(isDemoMode&&demoCount>=3){
-    alert('Demo limit reached. Upgrade to Pro for unlimited access!');
+    alert('Demo limit reached!\nUpgrade to Pro for unlimited access.');
     document.getElementById('app').classList.remove('active');
     document.getElementById('paywall').classList.add('active');
     return;
   }
-
   const btn=document.getElementById('solveBtn');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Solving...';
-
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Solving...';
   document.getElementById('resultArea').innerHTML=`
     <div class="result-card">
       <div class="result-tabs">
         <div class="tab active" onclick="switchTab('steps')" id="tab-steps">📐 Steps</div>
         <div class="tab" onclick="switchTab('explain')" id="tab-explain">💡 Explanation</div>
       </div>
-      <div class="tab-content active" id="content-steps">
-        <div class="solution-text" id="streamSteps"><span class="streaming-dot"></span></div>
-      </div>
-      <div class="tab-content" id="content-explain">
-        <div class="pending-msg">Generating steps first...<br/>Explanation coming next.</div>
-      </div>
+      <div class="tab-content active" id="content-steps"><div class="md" id="streamSteps"><span class="streaming-dot"></span></div></div>
+      <div class="tab-content" id="content-explain"><div class="pending-msg">Generating steps first...<br/>Explanation coming next.</div></div>
     </div>`;
 
   const msgContent=[];
-  if(imgBase64) msgContent.push({type:'image',source:{type:'base64',media_type:imgType||'image/jpeg',data:imgBase64}});
-  msgContent.push({type:'text',text: text||(imgBase64?'Solve the math problem in this image.':'')});
+  if(imgBase64)msgContent.push({type:'image',source:{type:'base64',media_type:imgType||'image/jpeg',data:imgBase64}});
+  msgContent.push({type:'text',text:text||(imgBase64?'Solve the math problem in this image.':'')});
 
   try{
-    // Step-by-step solution
     let stepsFull='';
-    const stepsReader = await callAPI(
-      `You are an expert math tutor. Solve math problems step by step in English.\nFormat:\n- Start with "📌 Problem:" restating the question\n- Number each step: "Step 1:", "Step 2:" etc.\n- Show all working\n- End with "★ Answer: [final answer]"`,
+    const r1=await callAPI(
+      'You are an expert math tutor. Solve math problems step by step in English.\nStart with "📌 Problem:" restating the question.\nNumber each step: "Step 1:", "Step 2:" etc.\nShow all working.\nEnd with "★ Answer: [final answer]"\nUse **bold** for key terms. Do NOT use --- separators.',
       [{role:'user',content:msgContent}]
     );
-    await streamReader(stepsReader, chunk => {
+    await readStream(r1,chunk=>{
       stepsFull+=chunk;
-      document.getElementById('streamSteps').innerHTML=fmtSteps(stepsFull)+'<span class="streaming-dot"></span>';
+      document.getElementById('streamSteps').innerHTML=renderMd(stepsFull)+'<span class="streaming-dot"></span>';
     });
-    document.getElementById('streamSteps').innerHTML=fmtSteps(stepsFull);
+    document.getElementById('streamSteps').innerHTML=renderMd(stepsFull);
 
-    // Explanation in chosen language
-    document.getElementById('content-explain').innerHTML=`<div class="solution-text" id="streamExplain"><span class="streaming-dot"></span></div>`;
+    document.getElementById('content-explain').innerHTML=`<div class="md" id="streamExplain"><span class="streaming-dot"></span></div>`;
     let expFull='';
-    const expReader = await callAPI(
-      `You are a math teacher. Write a conceptual explanation in ${selectedLang}.\nCover:\n1. What type of problem this is\n2. Key concepts and rules used\n3. Why each step works\n4. Common mistakes to avoid\n5. Real-world applications\nWrite entirely in ${selectedLang}.`,
+    const r2=await callAPI(
+      `You are a math teacher. Write a clear conceptual explanation in ${selectedLang}.\nUse these sections:\n1. What type of problem this is\n2. Key concepts and rules used\n3. Why each step works\n4. Common mistakes to avoid\n5. Real-world applications\nWrite entirely in ${selectedLang}. Use **bold** for key terms. Do NOT use --- separators or excessive markdown symbols.`,
       [{role:'user',content:msgContent},{role:'assistant',content:`Steps:\n\n${stepsFull}\n\nNow explain in ${selectedLang}.`}]
     );
-    await streamReader(expReader, chunk => {
+    await readStream(r2,chunk=>{
       expFull+=chunk;
-      document.getElementById('streamExplain').innerHTML=fmtExp(expFull)+'<span class="streaming-dot"></span>';
+      document.getElementById('streamExplain').innerHTML=renderMd(expFull)+'<span class="streaming-dot"></span>';
     });
-    document.getElementById('streamExplain').innerHTML=fmtExp(expFull);
-
-    if(isDemoMode) demoCount++;
-
+    document.getElementById('streamExplain').innerHTML=renderMd(expFull);
+    if(isDemoMode)demoCount++;
   }catch(err){
-    document.getElementById('resultArea').innerHTML=`<div style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.3);color:#ff4466;border-radius:12px;padding:16px;font-family:'Space Mono',monospace;font-size:13px">⚠ Error: ${err.message}</div>`;
+    document.getElementById('resultArea').innerHTML=`<div style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.3);color:#ff4466;border-radius:12px;padding:16px;font-family:'JetBrains Mono',monospace;font-size:13px">⚠ Error: ${err.message}</div>`;
   }
-
-  btn.disabled=false; btn.innerHTML='Solve →';
+  btn.disabled=false;btn.innerHTML='Solve →';
 }
 
 function switchTab(tab){
@@ -297,12 +307,6 @@ function switchTab(tab){
     document.getElementById('content-'+t).className='tab-content'+(t===tab?' active':'');
   });
 }
-function fmtSteps(t){
-  return t.replace(/★ Answer:(.*?)(\n|$)/g,'<span class="answer">★ Answer:$1</span>\n')
-          .replace(/(Step \d+:)/g,'<span class="step-head">$1</span>')
-          .replace(/(📌 Problem:)/g,'<span class="step-head">$1</span>');
-}
-function fmtExp(t){ return t.replace(/(\d+\.\s)/g,'\n<span class="step-head">$1</span>'); }
 </script>
 </body>
 </html>
