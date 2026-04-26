@@ -32,7 +32,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(7,7,13,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
 .app-header h1{font-size:19px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .demo-counter{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:#a78bfa;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace}
-.pro-badge{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace}
+.test-banner{background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:var(--gold);font-size:11px;font-family:'JetBrains Mono',monospace;padding:8px 20px;text-align:center}
 .app-body{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px}
 .input-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
 .card-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:12px}
@@ -87,8 +87,6 @@ textarea.math-input::placeholder{color:var(--muted)}
 .md p{margin-bottom:10px}
 .md ul{margin:8px 0 8px 20px}
 .md li{margin-bottom:4px}
-.md blockquote{border-left:3px solid var(--accent);padding-left:12px;color:var(--muted);margin:10px 0}
-.md code{background:rgba(124,58,237,.15);color:#a78bfa;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px}
 .answer-line{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:15px;font-weight:700;color:var(--accent)}
 .step-label{color:#a78bfa;font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace}
 .pending-msg{color:var(--muted);font-size:13px;text-align:center;padding:16px}
@@ -104,7 +102,7 @@ textarea.math-input::placeholder{color:var(--muted)}
 <div id="paywall" class="screen active">
   <div class="pw-logo">∑</div>
   <h1 class="pw-title">MathAI Pro</h1>
-  <p class="pw-sub">Solve anything. Understand everything.</p>
+  <p class="pw-sub">// solve anything. understand everything.</p>
   <div class="plan-card popular">
     <div class="popular-badge">Most Popular</div>
     <div class="plan-name">Pro Monthly</div>
@@ -135,6 +133,7 @@ textarea.math-input::placeholder{color:var(--muted)}
     <h1>MathAI</h1>
     <div id="headerBadge" class="demo-counter">3 free left</div>
   </div>
+  <div id="testBanner" class="test-banner" style="display:none">⚠ TEST MODE – No API credits used. Set TEST_MODE = false before launching.</div>
   <div class="app-body">
     <div class="input-card">
       <div class="card-label">Snap or type your problem</div>
@@ -154,8 +153,8 @@ textarea.math-input::placeholder{color:var(--muted)}
       <div class="examples-row">
         <span class="ex-chip" onclick="setEx('Solve: 2x² - 5x + 3 = 0')">Quadratic</span>
         <span class="ex-chip" onclick="setEx('Differentiate f(x) = x³ · sin(x)')">Differentiation</span>
-        <span class="ex-chip" onclick="setEx('Evaluate ∫₀¹ (x² + 2x) dx')">Integral</span>
-        <span class="ex-chip" onclick="setEx('Find lim(x→0) sin(x)/x')">Limit</span>
+        <span class="ex-chip" onclick="setEx('Evaluate the integral from 0 to 1 of x² + 2x')">Integral</span>
+        <span class="ex-chip" onclick="setEx('Find the limit as x approaches 0 of sin(x)/x')">Limit</span>
         <span class="ex-chip" onclick="setEx('Solve: 3x + 2y = 16, x - y = 1')">System</span>
       </div>
     </div>
@@ -186,14 +185,29 @@ textarea.math-input::placeholder{color:var(--muted)}
 </div>
 
 <script>
-let imgBase64=null,imgType=null,demoCount=0,isDemoMode=false,selectedLang='English';
+// ── Set to false when ready to launch ──
+const TEST_MODE = true;
+
+let imgBase64=null,imgType=null,selectedLang='English';
+let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
+let isDemoMode=localStorage.getItem('isDemoMode')==='true';
 let hist=JSON.parse(localStorage.getItem('mathHistory')||'[]');
+
+if(isDemoMode){
+  document.getElementById('paywall').classList.remove('active');
+  document.getElementById('app').classList.add('active');
+  updateCounter();renderHistory();
+}
+if(TEST_MODE){
+  document.getElementById('testBanner').style.display='block';
+}
 
 const STRIPE_LINKS={monthly:'https://buy.stripe.com/REPLACE_MONTHLY',yearly:'https://buy.stripe.com/REPLACE_YEARLY'};
 function handlePayment(plan){window.location.href=STRIPE_LINKS[plan];}
 
 function enterApp(){
   isDemoMode=true;
+  localStorage.setItem('isDemoMode','true');
   document.getElementById('paywall').classList.remove('active');
   document.getElementById('app').classList.add('active');
   updateCounter();renderHistory();
@@ -201,9 +215,10 @@ function enterApp(){
 
 function updateCounter(){
   const badge=document.getElementById('headerBadge');
-  const left=3-demoCount;
-  badge.textContent=left+' free left';
-  if(left===0){badge.style.color='#ff4466';badge.style.borderColor='rgba(255,68,102,.4)';}
+  const left=Math.max(0,3-demoCount);
+  badge.textContent=TEST_MODE?'TEST':left+' free left';
+  badge.className='demo-counter';
+  if(!TEST_MODE&&left===0){badge.style.color='#ff4466';badge.style.borderColor='rgba(255,68,102,.4)';}
 }
 
 function triggerCamera(){document.getElementById('camInput').click()}
@@ -256,11 +271,6 @@ function loadFromHistory(id){
 }
 function clearHistory(){hist=[];localStorage.removeItem('mathHistory');renderHistory();}
 
-function cleanLatex(str){
-  return str
-    .replace(/\$\$([^$]+)\$\$/g,(_,m)=>cleanMath(m))
-    .replace(/\$([^$]+)\$/g,(_,m)=>cleanMath(m));
-}
 function cleanMath(m){
   return m
     .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'($1)/($2)')
@@ -270,13 +280,14 @@ function cleanMath(m){
     .replace(/\\cdot/g,'·')
     .replace(/\\times/g,'×')
     .replace(/\\left|\\right/g,'')
-    .replace(/\^2/g,'²').replace(/\^3/g,'³').replace(/\^([0-9])/g,'^$1')
+    .replace(/\^2/g,'²').replace(/\^3/g,'³')
     .replace(/\{([^}]+)\}/g,'$1')
-    .replace(/\\_/g,'_').replace(/\\/g,'');
+    .replace(/\\/g,'');
 }
-
 function renderMd(text){
-  let t=cleanLatex(text);
+  let t=text
+    .replace(/\$\$([^$]+)\$\$/g,(_,m)=>cleanMath(m))
+    .replace(/\$([^$]+)\$/g,(_,m)=>cleanMath(m));
   t=t
     .replace(/^---+$/gm,'')
     .replace(/^#{3}\s(.+)$/gm,'<h3>$1</h3>')
@@ -285,22 +296,39 @@ function renderMd(text){
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
     .replace(/`(.+?)`/g,'<code>$1</code>')
-    .replace(/^>\s(.+)$/gm,'<blockquote>$1</blockquote>')
     .replace(/^[-*]\s(.+)$/gm,'<li>$1</li>')
     .replace(/★ Answer:(.*)/g,'<div class="answer-line">★ Answer:$1</div>')
     .replace(/(Step \d+:)/g,'<span class="step-label">$1</span>')
     .replace(/(📌 Problem:)/g,'<span class="step-label">$1</span>')
-    .replace(/\*\*/g,'').replace(/\*/g,'')
-    .replace(/---/g,'')
+    .replace(/\*\*/g,'').replace(/\*/g,'').replace(/---/g,'')
     .replace(/\n\n/g,'<br><br>');
   return t;
 }
 
 async function callAPI(system,messages){
+  if(TEST_MODE){
+    const isSteps=system.includes('tutor')||system.includes('Step');
+    const fakeSteps=`📌 Problem: Solve 2x² - 5x + 3 = 0\n\nStep 1: Identify a = 2, b = -5, c = 3\n\nStep 2: Calculate discriminant: b² - 4ac = 25 - 24 = 1\n\nStep 3: Apply quadratic formula: x = (5 ± 1) / 4\n\nStep 4: Two solutions: x = 6/4 = 3/2 and x = 4/4 = 1\n\n★ Answer: x = 3/2 or x = 1`;
+    const fakeExplain=`1. This is a quadratic equation problem.\n\n2. We used the quadratic formula: x = (-b ± √(b²-4ac)) / 2a\n\n3. The discriminant tells us how many solutions exist.\n\n4. Common mistake: forgetting the ± sign.\n\n5. Real-world use: projectile motion, area calculations.`;
+    const fakeText=isSteps?fakeSteps:fakeExplain;
+    const encoder=new TextEncoder();
+    const stream=new ReadableStream({
+      start(controller){
+        const words=fakeText.split(' ');let i=0;
+        const interval=setInterval(()=>{
+          if(i>=words.length){clearInterval(interval);controller.close();return;}
+          const chunk=`data: ${JSON.stringify({type:'content_block_delta',delta:{text:words[i++]+' '}})}\n\n`;
+          controller.enqueue(encoder.encode(chunk));
+        },40);
+      }
+    });
+    return stream.getReader();
+  }
   const res=await fetch('/api/solve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system,messages})});
   if(!res.ok)throw new Error('Server error '+res.status);
   return res.body.getReader();
 }
+
 async function readStream(reader,onChunk){
   const dec=new TextDecoder();
   while(true){
@@ -314,8 +342,8 @@ async function readStream(reader,onChunk){
 async function solve(){
   const text=document.getElementById('mathInput').value.trim();
   if(!text&&!imgBase64){alert('Type a problem or upload an image.');return;}
-  if(isDemoMode&&demoCount>=3){
-    alert('Demo limit reached!\nUpgrade to Pro for unlimited access.');
+  if(!TEST_MODE&&isDemoMode&&demoCount>=3){
+    alert('You have used all 3 free problems.\nUpgrade to Pro for unlimited access!');
     document.getElementById('app').classList.remove('active');
     document.getElementById('paywall').classList.add('active');
     return;
@@ -339,7 +367,7 @@ async function solve(){
   try{
     let stepsFull='';
     const r1=await callAPI(
-      'You are an expert math tutor. Solve math problems step by step in English.\nIMPORTANT: Do NOT use LaTeX or $$ notation. Write all math in plain text only.\nStart with "📌 Problem:" restating the question.\nNumber each step: "Step 1:", "Step 2:" etc.\nShow all working in plain text.\nEnd with "★ Answer: [final answer]"\nUse **bold** for key terms. Do NOT use --- separators.',
+      'You are an expert math tutor. Solve math problems step by step in English.\nIMPORTANT: Do NOT use LaTeX or $$ notation. Write all math in plain text only.\nStart with "📌 Problem:" restating the question.\nNumber each step: "Step 1:", "Step 2:" etc.\nEnd with "★ Answer: [final answer]"\nUse **bold** for key terms. Do NOT use --- separators.',
       [{role:'user',content:msgContent}]
     );
     await readStream(r1,chunk=>{stepsFull+=chunk;document.getElementById('streamSteps').innerHTML=renderMd(stepsFull)+'<span class="streaming-dot"></span>';});
@@ -358,7 +386,11 @@ async function solve(){
     await readStream(r2,chunk=>{expFull+=chunk;document.getElementById('streamExplain').innerHTML=renderMd(expFull)+'<span class="streaming-dot"></span>';});
     document.getElementById('streamExplain').innerHTML=renderMd(expFull);
 
-    if(isDemoMode){demoCount++;updateCounter();}
+    if(!TEST_MODE&&isDemoMode){
+      demoCount++;
+      localStorage.setItem('demoCount',demoCount);
+      updateCounter();
+    }
   }catch(err){
     document.getElementById('resultArea').innerHTML=`<div style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.3);color:#ff4466;border-radius:12px;padding:16px;font-size:13px">⚠ Error: ${err.message}</div>`;
   }
