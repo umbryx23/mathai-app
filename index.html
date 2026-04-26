@@ -94,7 +94,7 @@ textarea.math-input::placeholder{color:var(--muted)}
 <div id="paywall" class="screen active">
   <div class="pw-logo">∑</div>
   <h1 class="pw-title">MathAI Pro</h1>
-  <p class="pw-sub">// solve anything. understand everything.</p>
+  <p class="pw-sub">Solve anything. Understand everything.</p>
   <div class="plan-card popular">
     <div class="popular-badge">Most Popular</div>
     <div class="plan-name">Pro Monthly</div>
@@ -116,7 +116,7 @@ textarea.math-input::placeholder{color:var(--muted)}
     <ul class="plan-features"><li>Everything in monthly</li><li>Priority processing</li></ul>
   </div>
   <button class="pay-btn" onclick="handlePayment('yearly')">Start for $89.99 / year →</button>
-  <span class="demo-link" onclick="enterApp()">↳ Try free demo (3 problems)</span>
+  <span class="demo-link" onclick="enterApp()">Try free demo (3 problems)</span>
   <p class="stripe-note">🔒 Powered by Stripe · Secure & encrypted</p>
 </div>
 
@@ -165,7 +165,7 @@ textarea.math-input::placeholder{color:var(--muted)}
 </div>
 
 <script>
-const TEST_MODE = true; // Set to false when ready to launch
+const TEST_MODE = false; // Set to false when ready to launch
 
 let imgBase64=null,imgType=null,imgLabel=null;
 let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
