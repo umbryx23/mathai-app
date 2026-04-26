@@ -94,7 +94,7 @@ textarea.math-input::placeholder{color:var(--muted)}
 <div id="paywall" class="screen active">
   <div class="pw-logo">∑</div>
   <h1 class="pw-title">MathAI Pro</h1>
-  <p class="pw-sub">Solve anything. Understand everything.</p>
+  <p class="pw-sub">// solve anything. understand everything.</p>
   <div class="plan-card popular">
     <div class="popular-badge">Most Popular</div>
     <div class="plan-name">Pro Monthly</div>
@@ -116,7 +116,7 @@ textarea.math-input::placeholder{color:var(--muted)}
     <ul class="plan-features"><li>Everything in monthly</li><li>Priority processing</li></ul>
   </div>
   <button class="pay-btn" onclick="handlePayment('yearly')">Start for $89.99 / year →</button>
-  <span class="demo-link" onclick="enterApp()">Try free demo (3 problems)</span>
+  <span class="demo-link" onclick="enterApp()">↳ Try free demo (3 problems)</span>
   <p class="stripe-note">🔒 Powered by Stripe · Secure & encrypted</p>
 </div>
 
@@ -131,7 +131,7 @@ textarea.math-input::placeholder{color:var(--muted)}
       <div class="card-label">Snap or type your problem</div>
       <div class="camera-zone" id="cameraZone" onclick="triggerGallery()">
         <div class="camera-icon">📸</div>
-        <div class="camera-text">Tap to take photo or upload image<br/><span style="font-size:11px;opacity:.6">JPG, PNG supported</span></div>
+        <div class="camera-text">Tap to upload a photo of your problem<br/><span style="font-size:11px;opacity:.6">Works with textbooks, handwritten notes & exams</span></div>
       </div>
       <div class="cam-btns">
         <button class="cam-btn" onclick="triggerCamera()">📷 Camera</button>
@@ -140,14 +140,14 @@ textarea.math-input::placeholder{color:var(--muted)}
       </div>
       <input type="file" id="camInput" accept="image/*" capture="environment" onchange="handleImage(event)"/>
       <input type="file" id="galInput" accept="image/*" onchange="handleImage(event)"/>
-      <div class="divider"><span>or type it</span></div>
-      <textarea class="math-input" id="mathInput" placeholder="e.g. Solve 2x² - 5x + 3 = 0, or: integrate x² + 3x from 0 to 1" rows="3"></textarea>
+      <div class="divider"><span>or type it out</span></div>
+      <textarea class="math-input" id="mathInput" placeholder="Type any math problem — algebra, calculus, statistics, linear algebra and more..." rows="3"></textarea>
       <div class="examples-row">
-        <span class="ex-chip" onclick="setEx('Solve: 2x² - 5x + 3 = 0')">Quadratic</span>
-        <span class="ex-chip" onclick="setEx('Differentiate f(x) = x³ · sin(x)')">Differentiation</span>
-        <span class="ex-chip" onclick="setEx('Evaluate the integral from 0 to 1 of x² + 2x')">Integral</span>
-        <span class="ex-chip" onclick="setEx('Find the limit as x approaches 0 of sin(x)/x')">Limit</span>
-        <span class="ex-chip" onclick="setEx('Solve: 3x + 2y = 16, x - y = 1')">System</span>
+        <span class="ex-chip" onclick="randomEx('quadratic')">🎲 Quadratic</span>
+        <span class="ex-chip" onclick="randomEx('differentiation')">🎲 Differentiation</span>
+        <span class="ex-chip" onclick="randomEx('integral')">🎲 Integral</span>
+        <span class="ex-chip" onclick="randomEx('limit')">🎲 Limit</span>
+        <span class="ex-chip" onclick="randomEx('system')">🎲 System</span>
       </div>
     </div>
 
@@ -165,7 +165,57 @@ textarea.math-input::placeholder{color:var(--muted)}
 </div>
 
 <script>
-const TEST_MODE = false; // Set to false when ready to launch
+const TEST_MODE = true; // Set to false when ready to launch
+
+// Example banks – random pick each time
+const EXAMPLES = {
+  quadratic: [
+    'Solve: x² - 5x + 6 = 0',
+    'Solve: 2x² + 3x - 2 = 0',
+    'Solve: x² + 4x + 4 = 0',
+    'Solve: 3x² - 12 = 0',
+    'Solve: x² - 7x + 10 = 0',
+    'Solve: 4x² - 4x + 1 = 0',
+  ],
+  differentiation: [
+    'Differentiate f(x) = x³ · sin(x)',
+    'Differentiate f(x) = e^x · cos(x)',
+    'Differentiate f(x) = ln(x²+1)',
+    'Differentiate f(x) = x² / (x+1)',
+    'Differentiate f(x) = sin(x) / x',
+    'Differentiate f(x) = (x²+3)⁴',
+  ],
+  integral: [
+    'Evaluate the integral from 0 to 1 of x² + 2x',
+    'Evaluate the integral of sin(x) · cos(x)',
+    'Evaluate the integral from 1 to e of ln(x)',
+    'Evaluate the integral of x · e^x',
+    'Evaluate the integral from 0 to pi of sin(x)',
+    'Evaluate the integral of 1/(x²+1)',
+  ],
+  limit: [
+    'Find the limit as x approaches 0 of sin(x)/x',
+    'Find the limit as x approaches infinity of (1 + 1/x)^x',
+    'Find the limit as x approaches 0 of (e^x - 1)/x',
+    'Find the limit as x approaches 2 of (x²-4)/(x-2)',
+    'Find the limit as x approaches 0 of (1-cos(x))/x²',
+    'Find the limit as x approaches infinity of x/e^x',
+  ],
+  system: [
+    'Solve the system: 2x + y = 5, x - y = 1',
+    'Solve the system: 3x + 2y = 12, x - y = 1',
+    'Solve the system: x + y + z = 6, 2x - y = 3, y + z = 4',
+    'Solve the system: 4x - 3y = 1, 2x + y = 5',
+    'Solve the system: x² + y² = 25, x + y = 7',
+    'Solve the system: 5x - 2y = 8, 3x + y = 7',
+  ]
+};
+
+function randomEx(type){
+  const list=EXAMPLES[type];
+  const pick=list[Math.floor(Math.random()*list.length)];
+  document.getElementById('mathInput').value=pick;
+}
 
 let imgBase64=null,imgType=null,imgLabel=null;
 let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
@@ -200,9 +250,10 @@ function updateCounter(){
 
 function triggerCamera(){document.getElementById('camInput').click()}
 function triggerGallery(){document.getElementById('galInput').click()}
+
 function handleImage(e){
   const file=e.target.files[0];if(!file)return;
-  imgLabel=file.name; // Save real filename for history
+  imgLabel=file.name;
   const reader=new FileReader();
   reader.onload=(ev)=>{
     const src=ev.target.result;imgBase64=src.split(',')[1];imgType=file.type;
@@ -212,14 +263,21 @@ function handleImage(e){
   };
   reader.readAsDataURL(file);e.target.value='';
 }
+
 function clearImage(){
   imgBase64=null;imgType=null;imgLabel=null;
   const zone=document.getElementById('cameraZone');
-  zone.innerHTML=`<div class="camera-icon">📸</div><div class="camera-text">Tap to take photo or upload image<br/><span style="font-size:11px;opacity:.6">JPG, PNG supported</span></div>`;
+  zone.innerHTML=`<div class="camera-icon">📸</div><div class="camera-text">Tap to upload a photo of your problem<br/><span style="font-size:11px;opacity:.6">Works with textbooks, handwritten notes & exams</span></div>`;
   zone.onclick=triggerGallery;
   document.getElementById('clearBtn').style.display='none';
 }
-function setEx(t){document.getElementById('mathInput').value=t}
+
+function resetInput(){
+  // Clear text
+  document.getElementById('mathInput').value='';
+  // Clear image
+  clearImage();
+}
 
 function saveToHistory(question,answer){
   const item={id:Date.now(),question,answer,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),date:new Date().toLocaleDateString()};
@@ -318,11 +376,18 @@ async function solve(){
     return;
   }
 
-  // Use text or image filename for history label
-  const historyLabel = text || (imgLabel ? '📷 ' + imgLabel : '📷 Photo problem');
+  const historyLabel=text||(imgLabel?'📷 '+imgLabel:'📷 Photo problem');
 
   const btn=document.getElementById('solveBtn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Solving...';
+
+  const msgContent=[];
+  if(imgBase64)msgContent.push({type:'image',source:{type:'base64',media_type:imgType||'image/jpeg',data:imgBase64}});
+  msgContent.push({type:'text',text:text||(imgBase64?'Solve the math problem in this image.':'')});
+
+  // Clear input right after capturing the content
+  resetInput();
+
   document.getElementById('resultArea').innerHTML=`
     <div class="result-card">
       <div class="result-tabs">
@@ -332,10 +397,6 @@ async function solve(){
       <div class="tab-content active" id="content-steps"><div class="md" id="streamSteps"><span class="streaming-dot"></span></div></div>
       <div class="tab-content" id="content-explain"><div class="pending-msg">Generating steps first...<br/>Explanation coming next.</div></div>
     </div>`;
-
-  const msgContent=[];
-  if(imgBase64)msgContent.push({type:'image',source:{type:'base64',media_type:imgType||'image/jpeg',data:imgBase64}});
-  msgContent.push({type:'text',text:text||(imgBase64?'Solve the math problem in this image.':'')});
 
   try{
     let stepsFull='';
@@ -348,7 +409,7 @@ async function solve(){
 
     const answerMatch=stepsFull.match(/★ Answer:(.*)/);
     const shortAnswer=answerMatch?answerMatch[1].trim().replace(/\*\*/g,'').slice(0,60):'See solution';
-    saveToHistory(historyLabel, shortAnswer);
+    saveToHistory(historyLabel,shortAnswer);
 
     document.getElementById('content-explain').innerHTML=`<div class="md" id="streamExplain"><span class="streaming-dot"></span></div>`;
     let expFull='';
