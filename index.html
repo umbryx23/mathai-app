@@ -10,7 +10,7 @@
 :root{--bg:#07070d;--card:#0f0f1a;--border:#1e1e30;--accent:#00ff88;--purple:#7c3aed;--text:#e8e8f0;--muted:#5a5a72;--gold:#f59e0b;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;background-image:radial-gradient(ellipse at 15% 15%,rgba(124,58,237,.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(0,255,136,.06) 0%,transparent 55%);}
 .screen{display:none;min-height:100vh;flex-direction:column}.screen.active{display:flex}
-#paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center}
+#paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center}.plans-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:700px;margin:0 auto}.plans-row .plan-card{margin:0}.pay-btns-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:700px;margin:6px auto 0}.pay-btns-row .pay-btn{margin:0;max-width:none}
 .pw-logo{font-size:52px;margin-bottom:14px;filter:drop-shadow(0 0 24px rgba(0,255,136,.4))}
 .pw-title{font-size:clamp(30px,8vw,48px);font-weight:800;line-height:1.1;background:linear-gradient(135deg,#fff 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
 .pw-sub{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:28px}
@@ -114,27 +114,37 @@ textarea.math-input::placeholder{color:var(--muted)}
     <p>🎉 You've seen what MathAI can do!</p>
     <small>Upgrade to keep solving unlimited problems</small>
   </div>
-  <div class="plan-card popular">
-    <div class="popular-badge">Most Popular</div>
-    <div class="plan-name">Pro Monthly</div>
-    <div class="plan-price">$9.99 <span>/mo</span></div>
-    <div class="plan-period">cancel anytime</div>
-    <ul class="plan-features">
-      <li>Unlimited math problems</li>
-      <li>Snap a photo of any problem</li>
-      <li>Step-by-step solution</li>
-      <li>Full explanation included</li>
-      <li>Problem history & review</li>
-    </ul>
+  <div class="plans-row">
+    <div class="plan-card popular">
+      <div class="popular-badge">Popular</div>
+      <div class="plan-name">Monthly</div>
+      <div class="plan-price">$9.99 <span>/mo</span></div>
+      <div class="plan-period">cancel anytime</div>
+      <ul class="plan-features">
+        <li>Unlimited problems</li>
+        <li>Photo scanning</li>
+        <li>Step-by-step solution</li>
+        <li>Full explanation</li>
+        <li>Problem history</li>
+      </ul>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Yearly</div>
+      <div class="plan-price">$89.99 <span>/yr</span></div>
+      <div class="plan-period">save $30 vs monthly</div>
+      <ul class="plan-features">
+        <li>Everything in monthly</li>
+        <li>Priority processing</li>
+        <li style="opacity:.3">—</li>
+        <li style="opacity:.3">—</li>
+        <li style="opacity:.3">—</li>
+      </ul>
+    </div>
   </div>
-  <button class="pay-btn green" onclick="handlePayment('monthly')">Start for $9.99 / month →</button>
-  <div class="plan-card" style="margin-top:10px">
-    <div class="plan-name">Pro Yearly</div>
-    <div class="plan-price">$89.99 <span>/yr</span></div>
-    <div class="plan-period">save $30 vs monthly</div>
-    <ul class="plan-features"><li>Everything in monthly</li><li>Priority processing</li></ul>
+  <div class="pay-btns-row">
+    <button class="pay-btn green" onclick="handlePayment('monthly')">$9.99 / month →</button>
+    <button class="pay-btn" onclick="handlePayment('yearly')">$89.99 / year →</button>
   </div>
-  <button class="pay-btn" onclick="handlePayment('yearly')">Start for $89.99 / year →</button>
   <span class="demo-link" id="demoLink" onclick="enterApp()">Try free demo (3 problems)</span>
   <p class="stripe-note">🔒 Powered by Stripe · Secure & encrypted</p>
 </div>
