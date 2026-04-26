@@ -50,11 +50,6 @@ input[type=file]{display:none}
 textarea.math-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:15px;font-weight:500;padding:13px;resize:none;min-height:75px;transition:border-color .2s;line-height:1.6}
 textarea.math-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,255,136,.07)}
 textarea.math-input::placeholder{color:var(--muted)}
-.lang-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
-.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.lang-btn{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:10px 6px;cursor:pointer;text-align:center;transition:all .2s;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);line-height:1.5}
-.lang-btn:hover{border-color:var(--purple);color:var(--text)}.lang-btn.selected{border-color:var(--accent);background:rgba(0,255,136,.08);color:var(--accent)}
-.lang-flag{font-size:20px;display:block;margin-bottom:4px}
 .examples-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
 .ex-chip{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);color:#a78bfa;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;padding:5px 10px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .ex-chip:hover{background:rgba(124,58,237,.22)}
@@ -83,9 +78,6 @@ textarea.math-input::placeholder{color:var(--muted)}
 .md h1,.md h2{color:#fff;font-weight:700;margin:16px 0 8px;font-size:15px}
 .md h3{color:#a78bfa;font-weight:600;margin:12px 0 6px;font-size:13px}
 .md strong{color:#fff;font-weight:700}
-.md em{color:#c4b5fd;font-style:italic}
-.md p{margin-bottom:10px}
-.md ul{margin:8px 0 8px 20px}
 .md li{margin-bottom:4px}
 .answer-line{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:10px;padding:12px 16px;margin-top:12px;font-size:15px;font-weight:700;color:var(--accent)}
 .step-label{color:#a78bfa;font-weight:700;font-size:13px;font-family:'JetBrains Mono',monospace}
@@ -112,7 +104,7 @@ textarea.math-input::placeholder{color:var(--muted)}
       <li>Unlimited math problems</li>
       <li>Snap a photo of any problem</li>
       <li>Step-by-step solution</li>
-      <li>Explanation in 6 languages</li>
+      <li>Full explanation included</li>
       <li>Problem history & review</li>
     </ul>
   </div>
@@ -159,18 +151,6 @@ textarea.math-input::placeholder{color:var(--muted)}
       </div>
     </div>
 
-    <div class="lang-section">
-      <div class="card-label">Explanation language</div>
-      <div class="lang-grid">
-        <div class="lang-btn selected" onclick="selectLang(this,'English')"><span class="lang-flag">🇬🇧</span>English</div>
-        <div class="lang-btn" onclick="selectLang(this,'Norwegian')"><span class="lang-flag">🇳🇴</span>Norwegian</div>
-        <div class="lang-btn" onclick="selectLang(this,'Spanish')"><span class="lang-flag">🇪🇸</span>Spanish</div>
-        <div class="lang-btn" onclick="selectLang(this,'French')"><span class="lang-flag">🇫🇷</span>French</div>
-        <div class="lang-btn" onclick="selectLang(this,'Arabic')"><span class="lang-flag">🇸🇦</span>Arabic</div>
-        <div class="lang-btn" onclick="selectLang(this,'German')"><span class="lang-flag">🇩🇪</span>German</div>
-      </div>
-    </div>
-
     <button class="solve-btn" id="solveBtn" onclick="solve()">Solve →</button>
     <div id="resultArea"></div>
 
@@ -185,10 +165,9 @@ textarea.math-input::placeholder{color:var(--muted)}
 </div>
 
 <script>
-// ── Set to false when ready to launch ──
-const TEST_MODE = false;
+const TEST_MODE = true; // Set to false when ready to launch
 
-let imgBase64=null,imgType=null,selectedLang='English';
+let imgBase64=null,imgType=null,imgLabel=null;
 let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
 let isDemoMode=localStorage.getItem('isDemoMode')==='true';
 let hist=JSON.parse(localStorage.getItem('mathHistory')||'[]');
@@ -198,9 +177,7 @@ if(isDemoMode){
   document.getElementById('app').classList.add('active');
   updateCounter();renderHistory();
 }
-if(TEST_MODE){
-  document.getElementById('testBanner').style.display='block';
-}
+if(TEST_MODE) document.getElementById('testBanner').style.display='block';
 
 const STRIPE_LINKS={monthly:'https://buy.stripe.com/REPLACE_MONTHLY',yearly:'https://buy.stripe.com/REPLACE_YEARLY'};
 function handlePayment(plan){window.location.href=STRIPE_LINKS[plan];}
@@ -225,6 +202,7 @@ function triggerCamera(){document.getElementById('camInput').click()}
 function triggerGallery(){document.getElementById('galInput').click()}
 function handleImage(e){
   const file=e.target.files[0];if(!file)return;
+  imgLabel=file.name; // Save real filename for history
   const reader=new FileReader();
   reader.onload=(ev)=>{
     const src=ev.target.result;imgBase64=src.split(',')[1];imgType=file.type;
@@ -235,17 +213,13 @@ function handleImage(e){
   reader.readAsDataURL(file);e.target.value='';
 }
 function clearImage(){
-  imgBase64=null;imgType=null;
+  imgBase64=null;imgType=null;imgLabel=null;
   const zone=document.getElementById('cameraZone');
   zone.innerHTML=`<div class="camera-icon">📸</div><div class="camera-text">Tap to take photo or upload image<br/><span style="font-size:11px;opacity:.6">JPG, PNG supported</span></div>`;
   zone.onclick=triggerGallery;
   document.getElementById('clearBtn').style.display='none';
 }
 function setEx(t){document.getElementById('mathInput').value=t}
-function selectLang(el,lang){
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');selectedLang=lang;
-}
 
 function saveToHistory(question,answer){
   const item={id:Date.now(),question,answer,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),date:new Date().toLocaleDateString()};
@@ -275,14 +249,11 @@ function cleanMath(m){
   return m
     .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'($1)/($2)')
     .replace(/\\sqrt\{([^}]+)\}/g,'√($1)')
-    .replace(/\\sqrt/g,'√')
-    .replace(/\\pm/g,'±')
-    .replace(/\\cdot/g,'·')
-    .replace(/\\times/g,'×')
+    .replace(/\\sqrt/g,'√').replace(/\\pm/g,'±')
+    .replace(/\\cdot/g,'·').replace(/\\times/g,'×')
     .replace(/\\left|\\right/g,'')
     .replace(/\^2/g,'²').replace(/\^3/g,'³')
-    .replace(/\{([^}]+)\}/g,'$1')
-    .replace(/\\/g,'');
+    .replace(/\{([^}]+)\}/g,'$1').replace(/\\/g,'');
 }
 function renderMd(text){
   let t=text
@@ -295,7 +266,6 @@ function renderMd(text){
     .replace(/^#{1}\s(.+)$/gm,'<h1>$1</h1>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`(.+?)`/g,'<code>$1</code>')
     .replace(/^[-*]\s(.+)$/gm,'<li>$1</li>')
     .replace(/★ Answer:(.*)/g,'<div class="answer-line">★ Answer:$1</div>')
     .replace(/(Step \d+:)/g,'<span class="step-label">$1</span>')
@@ -307,18 +277,17 @@ function renderMd(text){
 
 async function callAPI(system,messages){
   if(TEST_MODE){
-    const isSteps=system.includes('tutor')||system.includes('Step');
-    const fakeSteps=`📌 Problem: Solve 2x² - 5x + 3 = 0\n\nStep 1: Identify a = 2, b = -5, c = 3\n\nStep 2: Calculate discriminant: b² - 4ac = 25 - 24 = 1\n\nStep 3: Apply quadratic formula: x = (5 ± 1) / 4\n\nStep 4: Two solutions: x = 6/4 = 3/2 and x = 4/4 = 1\n\n★ Answer: x = 3/2 or x = 1`;
-    const fakeExplain=`1. This is a quadratic equation problem.\n\n2. We used the quadratic formula: x = (-b ± √(b²-4ac)) / 2a\n\n3. The discriminant tells us how many solutions exist.\n\n4. Common mistake: forgetting the ± sign.\n\n5. Real-world use: projectile motion, area calculations.`;
+    const isSteps=system.includes('tutor');
+    const fakeSteps=`📌 Problem: Solve 2x² - 5x + 3 = 0\n\nStep 1: Identify a = 2, b = -5, c = 3\n\nStep 2: Discriminant = b² - 4ac = 25 - 24 = 1\n\nStep 3: x = (5 ± 1) / 4\n\nStep 4: x = 6/4 = 3/2 or x = 4/4 = 1\n\n★ Answer: x = 3/2 or x = 1`;
+    const fakeExplain=`1. This is a quadratic equation.\n\n2. We used the quadratic formula x = (-b ± √(b²-4ac)) / 2a\n\n3. The discriminant b²-4ac tells us how many solutions exist.\n\n4. Common mistake: forgetting the ± sign.\n\n5. Used in physics for projectile motion and area problems.`;
     const fakeText=isSteps?fakeSteps:fakeExplain;
     const encoder=new TextEncoder();
     const stream=new ReadableStream({
       start(controller){
         const words=fakeText.split(' ');let i=0;
-        const interval=setInterval(()=>{
-          if(i>=words.length){clearInterval(interval);controller.close();return;}
-          const chunk=`data: ${JSON.stringify({type:'content_block_delta',delta:{text:words[i++]+' '}})}\n\n`;
-          controller.enqueue(encoder.encode(chunk));
+        const iv=setInterval(()=>{
+          if(i>=words.length){clearInterval(iv);controller.close();return;}
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({type:'content_block_delta',delta:{text:words[i++]+' '}})}\n\n`));
         },40);
       }
     });
@@ -348,6 +317,10 @@ async function solve(){
     document.getElementById('paywall').classList.add('active');
     return;
   }
+
+  // Use text or image filename for history label
+  const historyLabel = text || (imgLabel ? '📷 ' + imgLabel : '📷 Photo problem');
+
   const btn=document.getElementById('solveBtn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Solving...';
   document.getElementById('resultArea').innerHTML=`
@@ -374,22 +347,20 @@ async function solve(){
     document.getElementById('streamSteps').innerHTML=renderMd(stepsFull);
 
     const answerMatch=stepsFull.match(/★ Answer:(.*)/);
-    const shortAnswer=answerMatch?answerMatch[1].trim().slice(0,60):'See solution';
-    saveToHistory(text||(imgBase64?'[Image problem]':''),shortAnswer);
+    const shortAnswer=answerMatch?answerMatch[1].trim().replace(/\*\*/g,'').slice(0,60):'See solution';
+    saveToHistory(historyLabel, shortAnswer);
 
     document.getElementById('content-explain').innerHTML=`<div class="md" id="streamExplain"><span class="streaming-dot"></span></div>`;
     let expFull='';
     const r2=await callAPI(
-      `You are a math teacher. Write a clear conceptual explanation in ${selectedLang}.\nIMPORTANT: Do NOT use LaTeX or $$ notation. Write all math in plain text only.\nSections:\n1. What type of problem this is\n2. Key concepts and rules\n3. Why each step works\n4. Common mistakes\n5. Real-world use\nWrite entirely in ${selectedLang}. Use **bold** for key terms. No --- separators.`,
-      [{role:'user',content:msgContent},{role:'assistant',content:`Steps:\n\n${stepsFull}\n\nNow explain in ${selectedLang}.`}]
+      'You are a math teacher. Write a clear conceptual explanation in English.\nIMPORTANT: Do NOT use LaTeX or $$ notation. Write all math in plain text only.\nSections:\n1. What type of problem this is\n2. Key concepts and rules\n3. Why each step works\n4. Common mistakes\n5. Real-world use\nUse **bold** for key terms. No --- separators.',
+      [{role:'user',content:msgContent},{role:'assistant',content:`Steps:\n\n${stepsFull}\n\nNow explain in English.`}]
     );
     await readStream(r2,chunk=>{expFull+=chunk;document.getElementById('streamExplain').innerHTML=renderMd(expFull)+'<span class="streaming-dot"></span>';});
     document.getElementById('streamExplain').innerHTML=renderMd(expFull);
 
     if(!TEST_MODE&&isDemoMode){
-      demoCount++;
-      localStorage.setItem('demoCount',demoCount);
-      updateCounter();
+      demoCount++;localStorage.setItem('demoCount',demoCount);updateCounter();
     }
   }catch(err){
     document.getElementById('resultArea').innerHTML=`<div style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.3);color:#ff4466;border-radius:12px;padding:16px;font-size:13px">⚠ Error: ${err.message}</div>`;
