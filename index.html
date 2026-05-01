@@ -12,26 +12,26 @@
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;background-image:radial-gradient(ellipse at 15% 15%,rgba(124,58,237,.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(0,255,136,.06) 0%,transparent 55%);}
 .screen{display:none;min-height:100vh;flex-direction:column}.screen.active{display:flex}
 
-/* ── PAYWALL ── */
-#paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center;gap:0}
-.pw-logo{font-size:52px;margin-bottom:14px;filter:drop-shadow(0 0 24px rgba(0,255,136,.4))}
-.pw-title{font-size:clamp(30px,8vw,48px);font-weight:800;line-height:1.1;background:linear-gradient(135deg,#fff 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
-.pw-sub{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:20px}
-.upgrade-notice{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:14px;padding:14px 20px;width:100%;max-width:700px;margin:0 auto 20px;text-align:center}
-.upgrade-notice p{font-size:13px;color:var(--accent);font-weight:600}
-.upgrade-notice small{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+/* ── LOGIN SCREEN ── */
+#login{align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:0}
+.login-logo{font-size:64px;margin-bottom:20px;filter:drop-shadow(0 0 30px rgba(0,255,136,.5))}
+.login-title{font-size:clamp(36px,9vw,56px);font-weight:800;line-height:1.1;background:linear-gradient(135deg,#fff 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.login-sub{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:40px}
+.features-list{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;width:100%;max-width:300px}
+.feature-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text);font-weight:500}
+.feature-item span:first-child{font-size:18px}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#1f1f1f;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;padding:16px 28px;cursor:pointer;transition:all .2s;width:100%;max-width:320px;margin:0 auto;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.google-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.google-btn svg{width:22px;height:22px;flex-shrink:0}
+.login-note{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;margin-top:16px;opacity:.6;max-width:280px;line-height:1.6}
 
-/* Google sign in button */
-.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1f1f1f;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;padding:14px 24px;cursor:pointer;transition:all .2s;width:100%;max-width:340px;margin:0 auto 20px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.google-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.4)}
-.google-btn svg{width:20px;height:20px;flex-shrink:0}
-.google-divider{display:flex;align-items:center;gap:12px;width:100%;max-width:700px;margin:0 auto 20px;color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace}
-.google-divider::before,.google-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-
+/* ── PAYWALL SCREEN ── */
+#paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center}
+.pw-logo{font-size:48px;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(0,255,136,.4))}
+.pw-title{font-size:clamp(26px,7vw,40px);font-weight:800;line-height:1.1;background:linear-gradient(135deg,#fff 30%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.pw-sub{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:8px}
+.pw-used{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:12px;padding:12px 20px;width:100%;max-width:700px;margin:0 auto 20px;font-size:13px;color:var(--accent);font-weight:600}
 .plans-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:700px;margin:0 auto}
-.plans-row .plan-card{margin:0}
-.pay-btns-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:700px;margin:6px auto 0}
-.pay-btns-row .pay-btn{margin:0;max-width:none}
 .plan-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;text-align:left;position:relative}
 .plan-card.popular{border-color:var(--accent);box-shadow:0 0 30px rgba(0,255,136,.1)}
 .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),#00cc66);color:#000;font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:20px;font-family:'JetBrains Mono',monospace;text-transform:uppercase}
@@ -41,23 +41,22 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .plan-features{list-style:none;display:flex;flex-direction:column;gap:7px}
 .plan-features li{font-size:13px;display:flex;align-items:center;gap:8px;font-weight:500}
 .plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.pay-btns-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:700px;margin:10px auto 0}
 .pay-btn{background:linear-gradient(135deg,var(--purple),#a855f7);color:white;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;padding:17px;cursor:pointer;transition:all .2s;width:100%}
 .pay-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,58,237,.4)}
 .pay-btn.green{background:linear-gradient(135deg,var(--accent),#00cc66);color:#000}
-.demo-link{display:block;text-align:center;margin-top:14px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline}
-.demo-link:hover{color:var(--text)}
-.stripe-note{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center;margin-top:16px;max-width:300px;line-height:1.6;opacity:.6}
+.stripe-note{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;text-align:center;margin-top:14px;opacity:.6}
+.signout-small{display:block;text-align:center;margin-top:10px;color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline}
 
 /* ── APP ── */
 .app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(7,7,13,.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
 .app-header h1{font-size:19px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.header-right{display:flex;align-items:center;gap:10px}
-.user-avatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);object-fit:cover}
+.header-right{display:flex;align-items:center;gap:8px}
 .user-email{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .signout-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:10px;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:'JetBrains Mono',monospace}
 .signout-btn:hover{border-color:#ff4466;color:#ff4466}
-.pro-badge{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace}
 .demo-counter{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);color:#a78bfa;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace}
+.pro-badge{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:20px;font-family:'JetBrains Mono',monospace}
 .test-banner{background:rgba(245,158,11,.1);border-bottom:1px solid rgba(245,158,11,.3);color:var(--gold);font-size:11px;font-family:'JetBrains Mono',monospace;padding:8px 20px;text-align:center}
 .app-body{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px}
 .input-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
@@ -110,40 +109,38 @@ textarea.math-input::placeholder{color:var(--muted)}
 .pending-msg{color:var(--muted);font-size:13px;text-align:center;padding:16px}
 .streaming-dot{display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 1s ease-in-out infinite;margin-left:4px;vertical-align:middle}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
-.upgrade-overlay{position:fixed;inset:0;background:rgba(7,7,13,.92);backdrop-filter:blur(8px);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;animation:fadeIn .4s ease}
-.upgrade-overlay .uo-icon{font-size:48px;margin-bottom:16px}
-.upgrade-overlay h2{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}
-.upgrade-overlay p{color:var(--muted);font-size:14px;margin-bottom:8px;max-width:280px;line-height:1.6}
-.upgrade-overlay .uo-timer{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:28px}
-.upgrade-overlay .uo-btn{background:linear-gradient(135deg,var(--accent),#00cc66);color:#000;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;padding:16px 32px;cursor:pointer;margin-bottom:12px;width:100%;max-width:300px}
-.upgrade-overlay .uo-skip{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
 </style>
 </head>
 <body>
 
-<!-- PAYWALL -->
-<div id="paywall" class="screen active">
-  <div class="pw-logo">∑</div>
-  <h1 class="pw-title">MathAI Pro</h1>
-  <p class="pw-sub">Solve anything. Understand everything.</p>
-
-  <div id="demoUsedNotice" style="display:none" class="upgrade-notice">
-    <p>🎉 You've seen what MathAI can do!</p>
-    <small>Sign in and upgrade to keep solving unlimited problems</small>
+<!-- ══ SCREEN 1: LOGIN ══ -->
+<div id="login" class="screen active">
+  <div class="login-logo">∑</div>
+  <h1 class="login-title">MathAI Pro</h1>
+  <p class="login-sub">// solve anything. understand everything.</p>
+  <div class="features-list">
+    <div class="feature-item"><span>📸</span><span>Snap a photo of any problem</span></div>
+    <div class="feature-item"><span>📐</span><span>Step-by-step solutions</span></div>
+    <div class="feature-item"><span>💡</span><span>Full conceptual explanation</span></div>
+    <div class="feature-item"><span>📚</span><span>Problem history & review</span></div>
+    <div class="feature-item"><span>🎓</span><span>From high school to university</span></div>
   </div>
-
-  <!-- Google sign in -->
   <button class="google-btn" onclick="signInWithGoogle()">
     <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
     Continue with Google
   </button>
+  <p class="login-note">Try 3 problems free · No credit card required</p>
+</div>
 
-  <div class="google-divider"><span>or upgrade directly</span></div>
-
+<!-- ══ SCREEN 2: PAYWALL ══ -->
+<div id="paywall" class="screen">
+  <div class="pw-logo">∑</div>
+  <h1 class="pw-title">Upgrade to Pro</h1>
+  <p class="pw-sub">You've used your 3 free problems</p>
+  <div class="pw-used">🎉 You've seen what MathAI can do — upgrade to keep going!</div>
   <div class="plans-row">
     <div class="plan-card popular">
       <div class="popular-badge">Popular</div>
@@ -175,20 +172,18 @@ textarea.math-input::placeholder{color:var(--muted)}
     <button class="pay-btn green" onclick="handlePayment('monthly')">$9.99 / month →</button>
     <button class="pay-btn" onclick="handlePayment('yearly')">$89.99 / year →</button>
   </div>
-  <span class="demo-link" id="demoLink" onclick="enterDemo()">Try free demo (3 problems)</span>
   <p class="stripe-note">🔒 Powered by Stripe · Secure & encrypted</p>
+  <span class="signout-small" onclick="signOut()">Sign out</span>
 </div>
 
-<!-- APP -->
+<!-- ══ SCREEN 3: APP ══ -->
 <div id="app" class="screen">
   <div class="app-header">
     <h1>MathAI</h1>
     <div class="header-right">
-      <div id="userInfo" style="display:none;align-items:center;gap:8px;display:flex">
-        <div id="userEmail" class="user-email"></div>
-        <button class="signout-btn" onclick="signOut()">Sign out</button>
-      </div>
-      <div id="headerBadge" class="demo-counter">3 free left</div>
+      <div id="userEmail" class="user-email"></div>
+      <button class="signout-btn" onclick="signOut()">Sign out</button>
+      <div id="headerBadge" class="demo-counter">3 left</div>
     </div>
   </div>
   <div id="testBanner" class="test-banner" style="display:none">⚠ TEST MODE – No API credits used. Set TEST_MODE = false before launching.</div>
@@ -231,7 +226,6 @@ textarea.math-input::placeholder{color:var(--muted)}
 <script>
 const TEST_MODE = false;
 
-// ── Supabase ──
 const SUPABASE_URL = 'https://jtusnbndlzlzfbkgxqbe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0dXNuYm5kbHpsemZia2d4cWJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MjUyMjUsImV4cCI6MjA5MzIwMTIyNX0.lvDliiU097_j1irZfPdJG1ZFt3DUW-AWeRMFOfXIdmw';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -248,13 +242,36 @@ const EXAMPLES={
 function randomEx(type){const list=EXAMPLES[type];document.getElementById('mathInput').value=list[Math.floor(Math.random()*list.length)];}
 
 let imgBase64=null,imgType=null,imgLabel=null;
-let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
-let isDemoMode=localStorage.getItem('isDemoMode')==='true';
 let currentUser=null;
-let isPro=false;
+let demoCount=parseInt(localStorage.getItem('demoCount')||'0');
 let hist=JSON.parse(localStorage.getItem('mathHistory')||'[]');
 
-// ── Auth ──
+function show(screenId){
+  ['login','paywall','app'].forEach(id=>{
+    document.getElementById(id).classList.toggle('active', id===screenId);
+  });
+}
+
+// Auth state
+db.auth.onAuthStateChange(async(event, session)=>{
+  if(session?.user){
+    currentUser=session.user;
+    document.getElementById('userEmail').textContent=currentUser.email;
+    document.getElementById('headerBadge').textContent=TEST_MODE?'TEST':Math.max(0,3-demoCount)+' left';
+    if(TEST_MODE) document.getElementById('testBanner').style.display='block';
+    renderHistory();
+    // If demo used up → paywall, else → app
+    if(!TEST_MODE && demoCount>=3){
+      show('paywall');
+    } else {
+      show('app');
+    }
+  } else {
+    currentUser=null;
+    show('login');
+  }
+});
+
 async function signInWithGoogle(){
   await db.auth.signInWithOAuth({
     provider:'google',
@@ -264,94 +281,19 @@ async function signInWithGoogle(){
 
 async function signOut(){
   await db.auth.signOut();
-  currentUser=null;isPro=false;
-  showPaywall();
+  show('login');
 }
 
 function handlePayment(plan){window.location.href=STRIPE_LINKS[plan];}
 
-// Check auth state on load
-db.auth.onAuthStateChange(async(event, session)=>{
-  if(session?.user){
-    currentUser=session.user;
-    // TODO: check if user has paid (isPro = await checkSubscription(session.user.id))
-    // For now, logged in users get full access after paying
-    isPro=true; // Change this when Stripe webhook is set up
-    showApp();
-  } else {
-    currentUser=null;isPro=false;
-    // If demo mode was active, restore it
-    if(isDemoMode && demoCount < 3){
-      showApp();
-    } else if(isDemoMode && demoCount >= 3){
-      document.getElementById('demoUsedNotice').style.display='block';
-      document.getElementById('demoLink').style.display='none';
-    }
-  }
-});
-
-function showApp(){
-  document.getElementById('paywall').classList.remove('active');
-  document.getElementById('app').classList.add('active');
-  if(currentUser){
-    document.getElementById('userInfo').style.display='flex';
-    document.getElementById('userEmail').textContent=currentUser.email;
-    document.getElementById('headerBadge').textContent='PRO';
-    document.getElementById('headerBadge').className='pro-badge';
-  } else {
-    updateCounter();
-  }
-  renderHistory();
-  if(TEST_MODE) document.getElementById('testBanner').style.display='block';
-}
-
-function showPaywall(){
-  document.getElementById('app').classList.remove('active');
-  document.getElementById('paywall').classList.add('active');
-}
-
-function enterDemo(){
-  isDemoMode=true;
-  localStorage.setItem('isDemoMode','true');
-  showApp();
-}
-
 function updateCounter(){
   const badge=document.getElementById('headerBadge');
   const left=Math.max(0,3-demoCount);
-  badge.textContent=TEST_MODE?'TEST':left+' free left';
+  badge.textContent=TEST_MODE?'TEST':left+' left';
   badge.className='demo-counter';
   if(!TEST_MODE&&left===0){badge.style.color='#ff4466';badge.style.borderColor='rgba(255,68,102,.4)';}
 }
 
-function showUpgradeOverlay(){
-  const overlay=document.createElement('div');
-  overlay.className='upgrade-overlay';overlay.id='upgradeOverlay';
-  let secs=8;
-  overlay.innerHTML=`
-    <div class="uo-icon">🎉</div>
-    <h2>That's your 3 free problems!</h2>
-    <p>Sign in with Google and upgrade to keep going — unlimited problems, any topic.</p>
-    <div class="uo-timer" id="overlayTimer">Taking you back in ${secs}s...</div>
-    <button class="uo-btn" onclick="goToPaywall()">Sign in & Upgrade →</button>
-    <span class="uo-skip" onclick="goToPaywall()">View plans</span>`;
-  document.body.appendChild(overlay);
-  const timer=setInterval(()=>{
-    secs--;
-    const el=document.getElementById('overlayTimer');
-    if(el)el.textContent=`Taking you back in ${secs}s...`;
-    if(secs<=0){clearInterval(timer);goToPaywall();}
-  },1000);
-}
-
-function goToPaywall(){
-  const ov=document.getElementById('upgradeOverlay');if(ov)ov.remove();
-  showPaywall();
-  document.getElementById('demoUsedNotice').style.display='block';
-  document.getElementById('demoLink').style.display='none';
-}
-
-// ── Image ──
 function triggerCamera(){document.getElementById('camInput').click()}
 function triggerGallery(){document.getElementById('galInput').click()}
 function handleImage(e){
@@ -375,7 +317,6 @@ function clearImage(){
 }
 function resetInput(){document.getElementById('mathInput').value='';clearImage();}
 
-// ── History ──
 function saveToHistory(question,answer){
   const item={id:Date.now(),question,answer,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),date:new Date().toLocaleDateString()};
   hist.unshift(item);if(hist.length>20)hist=hist.slice(0,20);
@@ -400,7 +341,6 @@ function loadFromHistory(id){
 }
 function clearHistory(){hist=[];localStorage.removeItem('mathHistory');renderHistory();}
 
-// ── Markdown ──
 function cleanMath(m){
   return m.replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g,'($1)/($2)').replace(/\\sqrt\{([^}]+)\}/g,'√($1)').replace(/\\sqrt/g,'√').replace(/\\pm/g,'±').replace(/\\cdot/g,'·').replace(/\\times/g,'×').replace(/\\left|\\right/g,'').replace(/\^2/g,'²').replace(/\^3/g,'³').replace(/\{([^}]+)\}/g,'$1').replace(/\\/g,'');
 }
@@ -409,7 +349,6 @@ function renderMd(text){
   return t.replace(/^---+$/gm,'').replace(/^#{3}\s(.+)$/gm,'<h3>$1</h3>').replace(/^#{2}\s(.+)$/gm,'<h2>$1</h2>').replace(/^#{1}\s(.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^[-*]\s(.+)$/gm,'<li>$1</li>').replace(/★ Answer:(.*)/g,'<div class="answer-line">★ Answer:$1</div>').replace(/(Step \d+:)/g,'<span class="step-label">$1</span>').replace(/(📌 Problem:)/g,'<span class="step-label">$1</span>').replace(/\*\*/g,'').replace(/\*/g,'').replace(/---/g,'').replace(/\n\n/g,'<br><br>');
 }
 
-// ── API ──
 async function callAPI(system,messages){
   if(TEST_MODE){
     const isSteps=system.includes('tutor');
@@ -432,16 +371,10 @@ async function readStream(reader,onChunk){
   }
 }
 
-// ── Solve ──
 async function solve(){
   const text=document.getElementById('mathInput').value.trim();
   if(!text&&!imgBase64){alert('Type a problem or upload an image.');return;}
-
-  // Access control
-  if(!TEST_MODE){
-    if(!currentUser && isDemoMode && demoCount>=3){goToPaywall();return;}
-    if(!currentUser && !isDemoMode){showPaywall();return;}
-  }
+  if(!TEST_MODE&&demoCount>=3){show('paywall');return;}
 
   const historyLabel=text||(imgLabel?'📷 '+imgLabel:'📷 Photo problem');
   const btn=document.getElementById('solveBtn');
@@ -477,9 +410,14 @@ async function solve(){
     await readStream(r2,chunk=>{expFull+=chunk;document.getElementById('streamExplain').innerHTML=renderMd(expFull)+'<span class="streaming-dot"></span>';});
     document.getElementById('streamExplain').innerHTML=renderMd(expFull);
 
-    if(!TEST_MODE && !currentUser && isDemoMode){
-      demoCount++;localStorage.setItem('demoCount',demoCount);updateCounter();
-      if(demoCount>=3)showUpgradeOverlay();
+    if(!TEST_MODE){
+      demoCount++;
+      localStorage.setItem('demoCount',demoCount);
+      updateCounter();
+      if(demoCount>=3){
+        // Show paywall after a short delay so user can see the last solution
+        setTimeout(()=>show('paywall'), 8000);
+      }
     }
   }catch(err){
     document.getElementById('resultArea').innerHTML=`<div style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.3);color:#ff4466;border-radius:12px;padding:16px;font-size:13px">⚠ Error: ${err.message}</div>`;
