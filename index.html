@@ -234,7 +234,7 @@ const TEST_MODE = false;
 // ── Supabase ──
 const SUPABASE_URL = 'https://jtusnbndlzlzfbkgxqbe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0dXNuYm5kbHpsemZia2d4cWJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MjUyMjUsImV4cCI6MjA5MzIwMTIyNX0.lvDliiU097_j1irZfPdJG1ZFt3DUW-AWeRMFOfXIdmw';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const STRIPE_LINKS={monthly:'https://buy.stripe.com/REPLACE_MONTHLY',yearly:'https://buy.stripe.com/REPLACE_YEARLY'};
 
@@ -256,14 +256,14 @@ let hist=JSON.parse(localStorage.getItem('mathHistory')||'[]');
 
 // ── Auth ──
 async function signInWithGoogle(){
-  await supabase.auth.signInWithOAuth({
+  await db.auth.signInWithOAuth({
     provider:'google',
     options:{redirectTo: window.location.origin}
   });
 }
 
 async function signOut(){
-  await supabase.auth.signOut();
+  await db.auth.signOut();
   currentUser=null;isPro=false;
   showPaywall();
 }
@@ -271,7 +271,7 @@ async function signOut(){
 function handlePayment(plan){window.location.href=STRIPE_LINKS[plan];}
 
 // Check auth state on load
-supabase.auth.onAuthStateChange(async(event, session)=>{
+db.auth.onAuthStateChange(async(event, session)=>{
   if(session?.user){
     currentUser=session.user;
     // TODO: check if user has paid (isPro = await checkSubscription(session.user.id))
