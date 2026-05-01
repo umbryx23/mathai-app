@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>MathAI Pro – Solve Any Math Problem</title>
+<title>MathPro AI – Solve Any Math Problem</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -23,7 +23,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-h
 .google-btn{display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#1f1f1f;border:none;border-radius:14px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;padding:16px 28px;cursor:pointer;transition:all .2s;width:100%;max-width:320px;margin:0 auto;box-shadow:0 4px 16px rgba(0,0,0,.3)}
 .google-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .google-btn svg{width:22px;height:22px;flex-shrink:0}
-.login-note{color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;margin-top:16px;opacity:.6;max-width:280px;line-height:1.6}
+.login-trial{color:var(--accent);font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;margin-bottom:20px;opacity:.9}
 
 /* ── PAYWALL SCREEN ── */
 #paywall{align-items:center;justify-content:center;padding:28px 20px;text-align:center}
@@ -119,8 +119,9 @@ textarea.math-input::placeholder{color:var(--muted)}
 <!-- ══ SCREEN 1: LOGIN ══ -->
 <div id="login" class="screen active">
   <div class="login-logo">∑</div>
-  <h1 class="login-title">MathAI Pro</h1>
-  <p class="login-sub">// solve anything. understand everything.</p>
+  <h1 class="login-title">MathPro AI</h1>
+  <p class="login-sub">Solve Anything. Understand Everything.</p>
+  <p class="login-trial">✨ Try 3 problems free — no credit card required</p>
   <div class="features-list">
     <div class="feature-item"><span>📸</span><span>Snap a photo of any problem</span></div>
     <div class="feature-item"><span>📐</span><span>Step-by-step solutions</span></div>
@@ -132,7 +133,7 @@ textarea.math-input::placeholder{color:var(--muted)}
     <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
     Continue with Google
   </button>
-  <p class="login-note">Try 3 problems free · No credit card required</p>
+  
 </div>
 
 <!-- ══ SCREEN 2: PAYWALL ══ -->
