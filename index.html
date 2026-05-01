@@ -352,8 +352,8 @@ function renderMd(text){
 
 async function callAPI(system,messages){
   if(TEST_MODE){
-    const isSteps=system.includes('tutor');
-    const fake=isSteps?`📌 Problem: Solve 2x² - 5x + 3 = 0\n\nStep 1: a=2, b=-5, c=3\n\nStep 2: Discriminant = 25 - 24 = 1\n\nStep 3: x = (5 ± 1) / 4\n\n★ Answer: x = 3/2 or x = 1`:`1. Quadratic equation.\n\n2. Formula: x = (-b ± √(b²-4ac)) / 2a\n\n3. Discriminant shows number of solutions.\n\n4. Common mistake: forgetting ± sign.\n\n5. Used in physics and engineering.`;
+    const isSteps=system.includes('math solver');
+    const fake=isSteps?`📌 Problem: Solve 2x² - 5x + 3 = 0\n\nFormula: Quadratic Formula → x = (-b ± √(b²-4ac)) / 2a\n\nStep 1: a=2, b=-5, c=3\nStep 2: b²-4ac = 25-24 = 1\nStep 3: x = (5 ± 1) / 4\nStep 4: x = 6/4 = 3/2  or  x = 4/4 = 1\n\n★ Answer: x = 3/2 or x = 1`:`1. Quadratic equation.\n\n2. Formula: x = (-b ± √(b²-4ac)) / 2a\n\n3. Discriminant shows number of solutions.\n\n4. Common mistake: forgetting ± sign.\n\n5. Used in physics and engineering.`;
     const enc=new TextEncoder();
     const stream=new ReadableStream({start(c){const w=fake.split(' ');let i=0;const iv=setInterval(()=>{if(i>=w.length){clearInterval(iv);c.close();return;}c.enqueue(enc.encode(`data: ${JSON.stringify({type:'content_block_delta',delta:{text:w[i++]+' '}})}\n\n`));},40);}});
     return stream.getReader();
@@ -398,7 +398,7 @@ async function solve(){
 
   try{
     let stepsFull='';
-    const r1=await callAPI('You are an expert math tutor. Solve math problems step by step in English.\nIMPORTANT: Do NOT use LaTeX or $$ notation. Write all math in plain text only.\nStart with "📌 Problem:" restating the question.\nNumber each step. End with "★ Answer: [final answer]"\nUse **bold** for key terms. Do NOT use --- separators.',[{role:'user',content:msgContent}]);
+    const r1=await callAPI('You are a math solver. Show the solution using NUMBERS AND SYMBOLS ONLY — no full sentences in steps.\nFormat:\n📌 Problem: [restate briefly]\n\nFormula: [name of formula or rule, e.g. Quadratic Formula, Product Rule]\n\nStep 1: [one line of math only, use → to show progression]\nStep 2: [one line of math only]\n...\n★ Answer: [final answer]\n\nRules:\n- Steps = math only. No sentences. Short labels like "let u =" or "sub x = 2" are ok.\n- Do NOT explain reasons in steps — save for Explanation tab.\n- Do NOT use LaTeX, $$, ---, or markdown headers.\n- Keep compact like a worked solution on paper.',[{role:'user',content:msgContent}]);
     await readStream(r1,chunk=>{stepsFull+=chunk;document.getElementById('streamSteps').innerHTML=renderMd(stepsFull)+'<span class="streaming-dot"></span>';});
     document.getElementById('streamSteps').innerHTML=renderMd(stepsFull);
 
